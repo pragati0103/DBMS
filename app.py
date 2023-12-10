@@ -45,8 +45,9 @@ class Cart(db.Model):
 
 class Category(db.Model):
     category_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
-    description = db.Column(db.Text)
+    categoty_name = db.Column(db.String(50), unique=True, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
+    
 
 class Review(db.Model):
     review_id = db.Column(db.Integer, primary_key=True)
@@ -80,8 +81,8 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/products')
-def product_list():
+@app.route('/products/<int:category_id>', methods=['GET'])
+def product_list(categoty_id):
     products = Product.query.all()
     return render_template('products.html', products=products)
 
