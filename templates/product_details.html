@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <!-- Add any additional styling or CDN links here -->
+    <style>
+        body {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details {
+            display: flex;
+            gap: 20px;
+        }
+
+        .product-image {
+            flex: 1;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            color: #ff9900;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart-btn {
+            background-color: #ff9900;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-details">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/500" alt="Product Image">
+            </div>
+            <div class="product-info">
+                <div class="product-title">Product Title</div>
+                <div class="product-description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </div>
+                <div class="product-price">$29.99</div>
+                <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add any additional scripts or CDN links here -->
+    <script>
+        function addToCart() {
+            // You can use JavaScript to make an API request to add the product to the cart
+            // For simplicity, let's assume you have an API endpoint for adding to the cart
+            // and the product ID is known
+            var productId = 1;  // Replace with the actual product ID
+            fetch(`/add_to_cart/${productId}`, {
+                method: 'GET'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response, e.g., show a success message
+                console.log('Product added to cart:', data);
+                alert('Product added to cart!');
+            })
+            .catch(error => {
+                // Handle errors, e.g., show an error message
+                console.error('Error adding product to cart:', error);
+                alert('Error adding product to cart. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
