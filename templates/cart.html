@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <!-- Add any additional styling or CDN links here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .cart-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-details img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 10px;
+        }
+
+        .cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/">Go Back to Index</a>
+        <h2>Your Cart</h2>
+
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <img src="{{ item.product_details.image_url }}" alt="Product Image">
+                    <div>
+                        <h3>{{ item.product_details.name }}</h3>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <p>Price: ${{ item.product_details.price }}</p>
+                        <p>Date Added: {{ item.date_added }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="cart-total">
+            Total Price: ${{ total_price }}
+        </div>
+    </div>
+</body>
+</html>
