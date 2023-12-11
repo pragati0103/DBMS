@@ -46,8 +46,13 @@
             </div>
 
             <div class="nav-signin border">
-                <p><span class="nav-first">Hello, Sign in</span></p>
-                <p class="nav-second">Account & List</p>
+                {% if username %}
+                    <p>Welcome, {{ username }}!</p>
+                    <p class="nav-second">Account & List</p>
+                {% else %}
+                <a href="/login" style="color: white;"><span class="nav-first">Hello, Sign in</span></p></a>
+                {% endif %}
+                
             </div>
 
             <div class="nav-return border">
@@ -57,7 +62,7 @@
 
             <div class="nav-cart border">
                 <i class="fa-solid fa-cart-shopping"></i>
-                Cart
+               <a href="/cart" style="color: white;"> Cart</a>
             </div>
         </div>
 
@@ -93,9 +98,9 @@
 
             <div class="box">
                 <div class=" box-content">
-                    <h2> Beauty pics</h2>
+                    <h2> Makeup</h2>
                     <div class="box-img" style="background-image: url('../static/images/box1_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/1">see more</a>
                 </div>
             </div>
 
@@ -103,7 +108,7 @@
                 <div class=" box-content">
                     <h2>Personal Care</h2>
                     <div class="box-img" style="background-image: url('../static/images/box2_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/2">see more</a>
                 </div>
             </div>
 
@@ -114,7 +119,7 @@
                     <div class="box-img" style="background-image: url('../static/images/box3_image.jpg');"></div>
 
 
-                    <p>see more</p>
+                    <a href="/products/3">see more</a>
                 </div>
             </div>
 
@@ -124,7 +129,7 @@
 
                     <h2>Mobiles </h2>
                     <div class="box-img" style="background-image: url('../static/images/box4_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/4">see more</a>
                 </div>
             </div>
 
@@ -132,7 +137,7 @@
                 <div class=" box-content">
                     <h2>Fashion</h2>
                     <div class="box-img" style="background-image: url('../static/images/box5_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/5">see more</a>
                 </div>
             </div>
 
@@ -140,7 +145,7 @@
                 <div class=" box-content">
                     <h2>Pets Care </h2>
                     <div class="box-img" style="background-image: url('../static/images/box6_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/6">see more</a>
                 </div>
             </div>
 
@@ -151,7 +156,7 @@
                     <div class="box-img" style="background-image: url('../static/images/box7_image.jpg');"></div>
 
 
-                    <p>see more</p>
+                    <a href="/products/7">see more</a>
                 </div>
             </div>
 
@@ -161,7 +166,7 @@
 
                     <h2>Clothes </h2>
                     <div class="box-img" style="background-image: url('../static/images/box8_image.jpg');"></div>
-                    <p>see more</p>
+                    <a href="/products/8">see more</a>
                 </div>
             </div>
 

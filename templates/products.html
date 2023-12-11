@@ -75,23 +75,52 @@
 </head>
 <body>
     <div class="container">
+        <a href="/">Go Back to Index</a>
         <h2>Products</h2>
         
         <!-- Product 1 -->
-        <div class="product">
-            <div class="product-image">
-                <img src="https://via.placeholder.com/200" alt="Product Image">
-            </div>
-            <div class="product-details">
-                <div class="product-title">Product 1</div>
-                <div class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel arcu vel leo vulputate eleifend.</div>
-                <div class="product-price">$19.99</div>
-                <button class="add-to-cart-btn">Add to Cart</button>
-            </div>
-        </div>
 
-        <!-- Repeat the above product block for additional products -->
+        {% for item in products %}
+        <a href="/product/{{ item.product_id }}" style="text-decoration: none; color: inherit;">
+            <div class="product">
+                <div class="product-image">
+                    <img src="{{ item.image_url }}" alt="Product Image">
+                </div>
+                <div class="product-details">
+                    <div class="product-title">{{ item.name }}</div>
+                    <div class="product-price">${{ item.price }}</div>
+                    <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
 
+        
     </div>
+    <script>
+        function addToCart() {
+           console.log('calling')
+            var productId = 1;  // Replace with the actual product ID
+            fetch(`/add_to_cart/${product.product_id}`, {
+                method: 'GET'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response, e.g., show a success message
+                console.log('Product added to cart:', data);
+                alert('Product added to cart!');
+            })
+            .catch(error => {
+                // Handle errors, e.g., show an error message
+                console.error('Error adding product to cart:', error);
+                alert('Error adding product to cart. Please try again.');
+            });
+        }
+    </script>
 </body>
 </html>
