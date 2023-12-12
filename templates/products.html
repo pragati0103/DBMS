@@ -89,7 +89,7 @@
                 <div class="product-details">
                     <div class="product-title">{{ item.name }}</div>
                     <div class="product-price">${{ item.price }}</div>
-                    <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                    <a href="/add_to_cart/{{ item.product_id }}" style="text-decoration: none; color: inherit;">  <button class="add-to-cart-btn" >Add to Cart</button> </a>
                 </div>
             </div>
         </a>
@@ -97,30 +97,6 @@
 
         
     </div>
-    <script>
-        function addToCart() {
-           console.log('calling')
-            var productId = 1;  // Replace with the actual product ID
-            fetch(`/add_to_cart/${product.product_id}`, {
-                method: 'GET'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle the response, e.g., show a success message
-                console.log('Product added to cart:', data);
-                alert('Product added to cart!');
-            })
-            .catch(error => {
-                // Handle errors, e.g., show an error message
-                console.error('Error adding product to cart:', error);
-                alert('Error adding product to cart. Please try again.');
-            });
-        }
-    </script>
+   
 </body>
 </html>

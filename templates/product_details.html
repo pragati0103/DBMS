@@ -83,7 +83,7 @@
                     {{product.description}}
                 </div>
                 <div class="product-price">${{product.price}}</div>
-                <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                <a href="/add_to_cart/{{ product.product_id }}" style="text-decoration: none; color: inherit;">  <button class="add-to-cart-btn" >Add to Cart</button> </a>
             </div>
         </div>
         {% endif %}
@@ -91,12 +91,9 @@
 
     <!-- Add any additional scripts or CDN links here -->
     <script>
-        function addToCart() {
-            // You can use JavaScript to make an API request to add the product to the cart
-            // For simplicity, let's assume you have an API endpoint for adding to the cart
-            // and the product ID is known
-            var productId = 1;  // Replace with the actual product ID
-            fetch(`/add_to_cart/${product.product_id}`, {
+        function addToCart(product_id) {
+            console.log(`${product_id}`);
+            fetch(`/add_to_cart/${product_id}`, {
                 method: 'GET'
             })
             .then(response => {
