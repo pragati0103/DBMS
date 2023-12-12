@@ -67,7 +67,7 @@ class Review(db.Model):
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
@@ -83,6 +83,11 @@ def login_required(f):
 
 @app.route('/')
 def index():
+    user_id = session.get('user_id')
+    if user_id :
+        sample_user = User.query.filter_by(user_id=user_id).first()
+        return render_template('index.html', username=sample_user.username)
+
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -146,6 +151,8 @@ def show_product_details(product_id):
 def add_to_cart(product_id):
 
     user_id = session.get('user_id')
+    print(user_id)
+    product_id=int(product_id)
 
     # Check if the product is already in the user's cart
     existing_cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
@@ -158,7 +165,7 @@ def add_to_cart(product_id):
 
     db.session.commit()
 
-    return redirect(url_for('product_list'))
+    return redirect('/cart')
 
 @app.route('/cart', methods=['GET'])
 @login_required
