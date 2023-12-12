@@ -199,6 +199,73 @@ def cart():
     # Render the carts.html template with cart details
     return render_template('cart.html', cart_items=cart_details, total_price=total_price)
 
+@app.route('/place_order', methods=['POST'])
+def place_order():
+    
+        # Get user_id from the request (you may use sessions or authentication to get the user_id)
+        user_id = session.get('user_id')  # Adjust based on your authentication mechanism
+
+        # Create a new order
+        new_order = Order(user_id=user_id, status='Placed')
+        db.session.add(new_order)
+        db.session.commit()
+
+        # Get cart items for the user (you need to have a Cart model to store cart items)
+        cart_items = Cart.query.filter_by(user_id=user_id).all()
+
+        # Add cart items to the order
+        for cart_item in cart_items:
+            order_item = OrderItem(
+                order_id=new_order.order_id,
+                product_id=cart_item.product_id,
+                quantity=cart_item.quantity,
+                price=cart_item.product.price  # Assuming each product has a price attribute
+            )
+            db.session.add(order_item)
+
+        # Remove cart items after placing the order
+        Cart.query.filter_by(user_id=user_id).delete()
+        db.session.commit()
+     
+        return redirect("/orders")
+
+@app.route('/orders', methods=['GET'])
+@login_required
+def user_orders():
+    
+        user_id = session.get('user_id') 
+        # Get all orders for the specified user_id
+        orders = Order.query.filter_by(user_id=user_id).all()
+
+        # Create a list to store order details
+        user_orders = []
+
+        # Iterate through each order and retrieve order details
+        for order in orders:
+            order_details = {
+                'order_id': order.order_id,
+                'order_date': order.order_date,
+                'status': order.status,
+                'items': []
+            }
+
+            # Retrieve order items for the current order
+            order_items = OrderItem.query.filter_by(order_id=order.order_id).all()
+
+            # Add order items to the order_details dictionary
+            for order_item in order_items:
+                item = {
+                    'product_name': order_item.product.name,
+                    'quantity': order_item.quantity,
+                    'price': order_item.price
+                }
+                order_details['items'].append(item)
+
+            # Add order_details to the user_orders list
+            user_orders.append(order_details)
+
+        return render_template('orders.html',orders= user_orders), 200
+
     
 
 if __name__ == '__main__':
