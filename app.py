@@ -55,15 +55,7 @@ class Category(db.Model):
         db.PrimaryKeyConstraint('category_id', 'product_id'),
     )
 
-    
-#not needed ig?
-class Review(db.Model):
-    review_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
-    rating = db.Column(db.Integer)
-    comment = db.Column(db.Text)
-    date = db.Column(db.DateTime, default=db.func.current_timestamp())
+ 
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -199,7 +191,7 @@ def cart():
     # Render the carts.html template with cart details
     return render_template('cart.html', cart_items=cart_details, total_price=total_price)
 
-@app.route('/place_order', methods=['POST'])
+@app.route('/place_order', methods=['GET'])
 def place_order():
     
         # Get user_id from the request (you may use sessions or authentication to get the user_id)
@@ -246,7 +238,7 @@ def user_orders():
                 'order_id': order.order_id,
                 'order_date': order.order_date,
                 'status': order.status,
-                'items': []
+                'order_items': []
             }
 
             # Retrieve order items for the current order
@@ -254,15 +246,23 @@ def user_orders():
 
             # Add order items to the order_details dictionary
             for order_item in order_items:
+
+                products=Product.query.filter_by(product_id=order_item.product_id).first()
+                
+
                 item = {
-                    'product_name': order_item.product.name,
+                    'product_id': products.product_id,
+                    'product_name':products.name,
                     'quantity': order_item.quantity,
                     'price': order_item.price
                 }
-                order_details['items'].append(item)
+
+                order_details['order_items'].append(item)
+                
 
             # Add order_details to the user_orders list
             user_orders.append(order_details)
+
 
         return render_template('orders.html',orders= user_orders), 200
 
