@@ -29,7 +29,7 @@ class Product(db.Model):
 class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
-    order_date = db.Column(db.DateTime, default=db.func.current_timestamp())
+    order_date = db.Column(db.DateTime, default=db.func.current_timestamp(timezone='Asia/Kolkata'))
     status = db.Column(db.String(50))
 
 class OrderItem(db.Model):
@@ -44,11 +44,11 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
     quantity = db.Column(db.Integer)
-    date_added = db.Column(db.DateTime, default=db.func.current_timestamp())
+    date_added = db.Column(db.DateTime, default=db.func.current_timestamp(timezone='Asia/Kolkata'))
 
 class Category(db.Model):
     category_id = db.Column(db.Integer,nullable=False )
-    categoty_name = db.Column(db.String(50), nullable=False)
+    category_name = db.Column(db.String(50), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
 
     __table_args__ = (
@@ -145,6 +145,7 @@ def add_to_cart(product_id):
     user_id = session.get('user_id')
     print(user_id)
     product_id=int(product_id)
+    category_id = Category.query.filter_by(product_id=product_id).first()
 
     # Check if the product is already in the user's cart
     existing_cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
@@ -157,7 +158,7 @@ def add_to_cart(product_id):
 
     db.session.commit()
 
-    return redirect('/cart')
+    return redirect(f'/products/{category_id.category_id}')
 
 @app.route('/cart', methods=['GET'])
 @login_required
@@ -187,7 +188,7 @@ def cart():
 
     # Calculate the total price of items in the cart
     total_price = sum(item['product_details']['price'] * item['quantity'] for item in cart_details)
-
+    total_price=round(total_price,2)
     # Render the carts.html template with cart details
     return render_template('cart.html', cart_items=cart_details, total_price=total_price)
 
